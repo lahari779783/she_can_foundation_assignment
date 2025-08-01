@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donation Leaderboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      body {
+        background-color: #f4f4f4;
+        padding: 2rem;
+      }
+      .card {
+        margin-bottom: 2rem;
+      }
+      table {
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center mb-4">Intern Donation Dashboard</h1>
+
+      <!-- Intern Info Card -->
+      <div class="card">
+        <div class="card-header">Intern Details</div>
+        <div class="card-body">
+          <h5 class="card-title" id="intern-name">Intern Name</h5>
+          <p class="card-text">
+            Referral Code: <strong id="referral-code">N/A</strong>
+          </p>
+          <p class="card-text">
+            Total Donations: <strong id="donation-amount">₹0</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Leaderboard Table -->
+      <div class="card">
+        <div class="card-header">Leaderboard</div>
+        <div class="card-body">
+          <table class="table table-bordered" id="leaderboard-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Intern Name</th>
+                <th>Total Donations</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Filled by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Add Intern Form -->
+      <div class="card">
+        <div class="card-header">Add New Intern</div>
+        <div class="card-body">
+          <form id="add-intern-form">
+            <div class="mb-3">
+              <label for="name" class="form-label">Intern Name</label>
+              <input type="text" class="form-control" name="name" required />
+            </div>
+            <div class="mb-3">
+              <label for="referral_code" class="form-label"
+                >Referral Code</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name="referral_code"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="donations" class="form-label">Donations (₹)</label>
+              <input
+                type="number"
+                class="form-control"
+                name="donations"
+                min="0"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Add Intern</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script -->
+    <script>
+      // Fetch intern data (first user)
+      fetch("/api/intern-data")
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById("intern-name").textContent = data.name;
+          document.getElementById("referral-code").textContent =
+            data.referral_code;
+          document.getElementById("donation-amount").textContent =
+            "₹" + data.donations;
+        })
+        .catch((error) => console.error("Error fetching intern data:", error));
+
+      // Fetch leaderboard data
+      function loadLeaderboard() {
+        fetch("/api/leaderboard")
+          .then((response) => response.json())
+          .then((data) => {
+            const tbody = document.querySelector("#leaderboard-table tbody");
+            tbody.innerHTML = ""; // Clear old rows
+            data.forEach((user, index) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+              <td>${index + 1}</td>
+              <td>${user.name}</td>
+              <td>₹${user.donations}</td>
+            `;
+              tbody.appendChild(row);
+            });
+          })
+          .catch((error) =>
+            console.error("Error fetching leaderboard data:", error)
+          );
+      }
+
+      loadLeaderboard(); // Initial load
+
+      // Handle Add Intern form submission
+      document
+        .getElementById("add-intern-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const form = e.target;
+          const name = form.name.value;
+          const referral_code = form.referral_code.value;
+          const donations = parseInt(form.donations.value) || 0;
+
+          fetch("/api/add-user", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: name,
+              referral_code: referral_code,
+              donations: donations,
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.message) {
+                alert("✅ " + data.message);
+                loadLeaderboard(); // Refresh leaderboard after adding
+                form.reset();
+              } else {
+                alert("❌ Failed to add intern: " + data.error);
+              }
+            })
+            .catch((err) => {
+              console.error(err);
+              alert("❌ Error adding intern.");
+            });
+        });
+    </script>
+  </body>
+</html>

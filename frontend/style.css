@@ -1,0 +1,142 @@
+body {
+  background: linear-gradient(
+    to right,
+    #ffe0e9,
+    #e0f7fa,
+    #e6e6fa
+  ); /* peach to teal to lavender */
+  font-family: "Segoe UI", sans-serif;
+  color: #1e1e1e; /* Darker text */
+}
+
+.container {
+  margin-top: 50px;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.95); /* translucent white */
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  transition: transform 0.3s ease;
+  color: #1a1a1a; /* Darker text */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-title {
+  color: #4b004d; /* deeper purple */
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.card-text {
+  color: #1f1f1f; /* Dark gray */
+  font-size: 16px;
+}
+
+.btn-primary {
+  background: linear-gradient(to right, #00b4d8, #8e44ad); /* teal to purple */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(
+    to right,
+    #8e44ad,
+    #00b4d8
+  ); /* reversed on hover */
+}
+
+/* Headings */
+h1,
+h2 {
+  text-align: center;
+  color: #111111; /* Darker heading */
+}
+
+/* Form input styles */
+form input[type="text"],
+form input[type="password"],
+form input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #222; /* Dark text inside inputs */
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Dashboard styles */
+.dashboard {
+  text-align: center;
+  padding: 40px;
+  color: #1d1d1d;
+}
+
+/* Leaderboard styles */
+.leaderboard {
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  color: #1e1e1e; /* Darker table text */
+}
+
+th,
+td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #007bff;
+  color: white;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Add User Form on Dashboard */
+#addUserForm {
+  margin-top: 30px;
+}
+
+.success-message {
+  color: green;
+  text-align: center;
+  margin-top: 10px;
+}
